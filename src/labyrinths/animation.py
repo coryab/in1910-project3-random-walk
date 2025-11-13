@@ -80,7 +80,7 @@ class Animation:
             Object containing the dots
         """
         self._mw.move()
-        self._pos.set_offsets(np.array([self._mw.x, self._mw.y]).T)
+        self._pos.set_offsets(np.array([self._xs[i], self._ys[i]]).T)
         self._pos.axes.title.set_text(f"Frame {i}")
         return (self._pos,)
 
@@ -112,6 +112,16 @@ class Animation:
         FuncAnimation
             Animation object
         """
+
+        # Run the maze walker and save all positions
+        self._xs = [self._mw.x]
+        self._ys = [self._mw.y]
+
+        for _ in range(1,N):
+            self._mw.move()
+            self._xs.append(self._mw.x)
+            self._ys.append(self._mw.y)
+
         fig = self.plot(size, show=False)
         animation = FuncAnimation(
             fig,
